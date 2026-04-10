@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bivacco Zeni — Val di Fassa</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg:        #0d1117;
+      --bg2:       #131a22;
+      --bg3:       #1a2332;
+      --stone:     #2a3a4a;
+      --pine:      #1e3a2f;
+      --amber:     #c8863a;
+      --amber-lt:  #e8a85a;
+      --cream:     #e8dcc8;
+      --mist:      #9ab0c0;
+      --snow:      #f0ece4;
+      --danger:    #8b3030;
+      --serif:     'Cormorant Garamond', Georgia, serif;
+      --mono:      'Space Mono', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--cream);
+      font-family: var(--serif);
+      font-size: 18px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    ::selection { background: var(--amber); color: var(--bg); }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.03;
+    }
+
+    section, header, footer, div { position: relative; z-index: 1; }
+
+    /* ─── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 4rem clamp(1.5rem, 6vw, 6rem) 3rem;
+      background:
+        radial-gradient(ellipse at 30% 60%, rgba(30,58,47,0.5) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 20%, rgba(200,134,58,0.15) 0%, transparent 50%),
+        linear-gradient(170deg, #0a0f14 0%, #0d1a24 40%, #111e2a 100%);
+      border-bottom: 1px solid rgba(200,134,58,0.2);
+      overflow: hidden;
+    }
+    .hero-mountain { position: absolute; bottom: 0; left: 0; right: 0; pointer-events: none; }
+    .stars { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+    .star {
+      position: absolute; width: 2px; height: 2px;
+      background: var(--cream); border-radius: 50%;
+      animation: twinkle var(--dur, 3s) ease-in-out infinite var(--del, 0s);
+    }
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.1; }
+      50%       { opacity: 0.9; }
+    }
+    .hero-title {
+      font-size: clamp(3rem, 10vw, 8rem); font-weight: 300;
+      line-height: 0.95; color: var(--snow); letter-spacing: -0.02em;
+      margin-bottom: 0.4rem; opacity: 0;
+      animation: fadeUp 0.9s ease forwards 0.5s;
+    }
+    .hero-title em { font-style: italic; color: var(--amber); }
+    .hero-badges {
+      display: flex; flex-wrap: wrap; gap: 0.75rem;
+      opacity: 0; animation: fadeUp 0.9s ease forwards 0.9s;
+    }
+    .badge {
+      font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.12em;
+      text-transform: uppercase; padding: 0.4rem 0.9rem;
+      border: 1px solid rgba(200,134,58,0.35); color: var(--amber-lt);
+      background: rgba(200,134,58,0.07); border-radius: 2px;
+    }
+    .egg-star {
+      position: absolute; top: 18%; right: 22%; font-size: 0.8rem;
+      color: rgba(200,134,58,0.25); cursor: pointer;
+      transition: color 0.3s, transform 0.3s; user-select: none; z-index: 10;
+    }
+    .egg-star:hover { color: var(--amber); transform: scale(1.5) rotate(20deg); }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── SECTIONS ── */
+    .section { padding: clamp(3rem, 8vw, 7rem) clamp(1.5rem, 6vw, 6rem); }
+    .section--dark  { background: var(--bg2); }
+    .section--stone { background: var(--bg3); }
+    .section--pine  { background: linear-gradient(135deg, #0e1e17 0%, #111c14 100%); }
+    .section-label {
+      font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.3em;
+      text-transform: uppercase; color: var(--amber); margin-bottom: 1rem;
+    }
+    .section-title {
+      font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 300;
+      color: var(--snow); line-height: 1.1; margin-bottom: 1.5rem;
+    }
+    .section-title em { font-style: italic; color: var(--amber-lt); }
+    .divider { width: 3rem; height: 1px; background: var(--amber); margin: 1.5rem 0 2rem; opacity: 0.5; }
+
+    /* ─── INFO GRID ── */
+    .info-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1px; background: rgba(200,134,58,0.15);
+      border: 1px solid rgba(200,134,58,0.15); margin: 3rem 0;
+    }
+    .info-card { padding: 1.8rem; background: var(--bg2); display: flex; flex-direction: column; gap: 0.4rem; }
+    .info-card-label { font-family: var(--mono); font-size: 0.55rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--mist); }
+    .info-card-value { font-size: 2rem; font-weight: 600; color: var(--amber-lt); line-height: 1; }
+    .info-card-unit { font-size: 0.8rem; color: var(--mist); font-style: italic; }
+
+    /* ─── TWO-COL ── */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+    @media (max-width: 768px) { .two-col { grid-template-columns: 1fr; gap: 2rem; } }
+
+    /* ─── PROSE ── */
+    .prose p { margin-bottom: 1.2rem; color: var(--cream); font-size: 1.05rem; }
+    .prose strong { color: var(--amber-lt); font-weight: 600; }
+
+    /* ─── IMAGE GRID ── */
+    .image-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 2rem 0; }
+    .image-grid--3 { grid-template-columns: 1fr 1fr 1fr; }
+    @media (max-width: 600px) { .image-grid, .image-grid--3 { grid-template-columns: 1fr; } }
+
+    /* ─── GEAR ── */
+    .gear-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.5rem; margin-top: 1.5rem; }
+    .gear-item { display: flex; align-items: center; gap: 0.75rem; font-size: 0.9rem; padding: 0.6rem 0; border-bottom: 1px solid rgba(255,255,255,0.05); color: var(--cream); }
+    .gear-icon { color: var(--amber); font-size: 0.8rem; }
+    .egg-gear { display: inline-block; font-size: 0.55rem; color: rgba(200,134,58,0.15); cursor: pointer; margin-left: 4px; vertical-align: middle; transition: color 0.3s; user-select: none; }
+    .egg-gear:hover { color: var(--amber); }
+
+    /* ─── MAP ── */
+    .map-container {
+      width: 100%; aspect-ratio: 16/9; min-height: 420px;
+      border: 1px solid rgba(200,134,58,0.2); border-radius: 2px;
+      overflow: hidden; margin: 2rem 0; background: var(--stone); position: relative;
+    }
+    .map-container iframe { width: 100%; height: 100%; border: none; }
+
+    /* ─── BOXES ── */
+    .info-box { border: 1px solid rgba(200,134,58,0.25); background: rgba(200,134,58,0.05); padding: 2rem; border-radius: 2px; margin: 2rem 0; }
+    .info-box-title { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--amber); margin-bottom: 1rem; }
+    .warning-box { border-left: 3px solid var(--danger); background: rgba(139,48,48,0.08); padding: 1.2rem 1.5rem; margin: 1.5rem 0; font-size: 0.9rem; color: #d4a0a0; }
+    .warning-box strong { color: #e08080; }
+
+    /* ─── FOOTER ── */
+    footer {
+      background: #080c10; padding: 3rem clamp(1.5rem, 6vw, 6rem);
+      border-top: 1px solid rgba(200,134,58,0.1);
+      display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1.5rem;
+    }
+    .footer-copy { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--mist); opacity: 0.4; }
+    .footer-coords { font-family: var(--mono); font-size: 0.65rem; color: var(--amber); opacity: 0.5; }
+    .egg-footer { position: absolute; bottom: 1rem; right: 1.5rem; font-size: 0.4rem; color: rgba(200,134,58,0.1); cursor: pointer; transition: all 0.3s; user-select: none; }
+    .egg-footer:hover { color: var(--amber); transform: scale(2); }
+
+    /* ─── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem clamp(1.5rem, 6vw, 6rem);
+      background: rgba(13,17,23,0.85); backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(200,134,58,0.08);
+    }
+    .nav-logo { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--amber); text-decoration: none; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { font-family: var(--mono); font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--mist); text-decoration: none; opacity: 0.6; transition: opacity 0.2s, color 0.2s; }
+    .nav-links a:hover { opacity: 1; color: var(--amber-lt); }
+    @media (max-width: 600px) { .nav-links { display: none; } }
+    /* Egg progress counter in nav */
+    .egg-counter { font-family: var(--mono); font-size: 0.5rem; letter-spacing: 0.12em; color: var(--amber); opacity: 0.35; transition: opacity 0.5s, color 0.5s; }
+    .egg-counter.all-done { opacity: 1; color: var(--amber-lt); }
+
+    /* ─── ELEVATION CHART ── */
+    .elev-chart { width: 100%; height: 120px; margin: 2rem 0; position: relative; overflow: hidden; }
+    .elev-chart svg { width: 100%; height: 100%; }
+
+    /* ─── SCROLL REVEAL ── */
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ─── TOOLTIP ── */
+    [data-tip] { position: relative; cursor: help; }
+    [data-tip]::after {
+      content: attr(data-tip); position: absolute; bottom: calc(100% + 8px); left: 50%;
+      transform: translateX(-50%); background: var(--bg); border: 1px solid rgba(200,134,58,0.3);
+      color: var(--cream); font-family: var(--mono); font-size: 0.55rem; letter-spacing: 0.1em;
+      padding: 0.4rem 0.7rem; white-space: nowrap; pointer-events: none; opacity: 0; transition: opacity 0.2s; z-index: 50;
+    }
+    [data-tip]:hover::after { opacity: 1; }
+
+    /* ─── EGG NUMBERS ── */
+    .egg-num { color: rgba(200,134,58,0.45); font-weight: 700; font-family: var(--mono); font-size: 0.7em; }
+
+    /* ─── MODALS (shared) ── */
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 1000;
+      background: rgba(5,8,12,0.92); backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: center; padding: 2rem;
+      opacity: 0; pointer-events: none; transition: opacity 0.3s;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal {
+      background: var(--bg2); border: 1px solid rgba(200,134,58,0.3);
+      max-width: 520px; width: 100%; padding: 2.5rem; position: relative;
+      transform: translateY(20px); transition: transform 0.3s;
+    }
+    .modal-overlay.open .modal { transform: translateY(0); }
+    .modal-close {
+      position: absolute; top: 1rem; right: 1rem; background: none; border: none;
+      color: var(--mist); cursor: pointer; font-size: 1.2rem; opacity: 0.5; transition: opacity 0.2s;
+    }
+    .modal-close:hover { opacity: 1; }
+    .modal-title { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--amber); margin-bottom: 1.2rem; }
+    .modal-heading { font-size: 1.6rem; font-weight: 300; color: var(--snow); margin-bottom: 1rem; line-height: 1.2; }
+    .modal-body { font-size: 0.95rem; color: var(--cream); }
+    .modal-body p { margin-bottom: 0.8rem; }
+
+    /* ─── PUZZLE UI ── */
+    .morse-hint { font-family: var(--mono); font-size: 0.55rem; letter-spacing: 0.1em; color: var(--mist); opacity: 0.8; margin-top: 0.5rem; }
+    .morse-result {
+      margin-top: 1rem; padding: 1rem;
+      background: rgba(30,58,47,0.4); border: 1px solid rgba(100,180,130,0.2);
+      color: #90d4b0; font-family: var(--mono); font-size: 0.8rem; text-align: center; display: none;
+    }
+    .morse-result.show { display: block; }
+    .morse-result.error { display: block; background: rgba(80,20,20,0.4); border-color: rgba(200,80,80,0.2); color: #d08080; }
+    .riddle-input {
+      width: 100%; background: var(--bg); border: 1px solid rgba(200,134,58,0.25);
+      color: var(--cream); font-family: var(--mono); font-size: 0.85rem;
+      padding: 0.8rem 1rem; outline: none; margin: 0.8rem 0; transition: border-color 0.2s;
+    }
+    .riddle-input:focus { border-color: var(--amber); }
+    .riddle-submit {
+      width: 100%; background: rgba(200,134,58,0.15); border: 1px solid rgba(200,134,58,0.35);
+      color: var(--amber-lt); font-family: var(--mono); font-size: 0.65rem;
+      letter-spacing: 0.2em; text-transform: uppercase; padding: 0.8rem; cursor: pointer; transition: background 0.2s;
+    }
+    .riddle-submit:hover { background: rgba(200,134,58,0.3); }
+    .coord-clues {
+      font-family: var(--mono); font-size: 0.75rem; color: var(--cream);
+      background: var(--bg); border: 1px solid rgba(200,134,58,0.15);
+      padding: 1rem; margin: 0.8rem 0; line-height: 2;
+    }
+    .coord-highlight { color: var(--amber-lt); font-weight: 700; }
+
+    /* ─── VITTORIA MODAL ── */
+    #modalVittoria .modal {
+      max-width: 460px;
+      border-color: rgba(200,134,58,0.6);
+      text-align: center;
+    }
+    .vittoria-stars {
+      font-size: 1.6rem; letter-spacing: 0.4em;
+      margin-bottom: 1.2rem;
+      animation: starPulse 1.8s ease-in-out infinite;
+    }
+    @keyframes starPulse {
+      0%, 100% { opacity: 1; transform: scale(1);    }
+      50%       { opacity: 0.6; transform: scale(1.08); }
+    }
+    .vittoria-label {
+      font-family: var(--mono); font-size: 0.55rem;
+      letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--amber); margin-bottom: 0.8rem;
+    }
+    .vittoria-heading {
+      font-size: clamp(1.6rem, 4vw, 2.2rem); font-weight: 300;
+      color: var(--snow); line-height: 1.1; margin-bottom: 0.4rem;
+    }
+    .vittoria-heading em { font-style: italic; color: var(--amber); }
+    .vittoria-divider { width: 2rem; height: 1px; background: var(--amber); opacity: 0.4; margin: 1.2rem auto; }
+    /* The message box */
+    .vittoria-msg-box {
+      border: 1px solid rgba(200,134,58,0.4);
+      background: rgba(200,134,58,0.06);
+      padding: 1.5rem 2rem;
+      margin: 1.2rem 0 1.8rem;
+    }
+    .vittoria-msg-box-label {
+      font-family: var(--mono); font-size: 0.5rem;
+      letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--mist); opacity: 0.5; margin-bottom: 0.7rem;
+    }
+    .vittoria-msg-text {
+      font-size: clamp(1.3rem, 3.5vw, 1.7rem);
+      font-style: italic; color: var(--snow); line-height: 1.4;
+    }
+    .vittoria-btn {
+      font-family: var(--mono); font-size: 0.58rem;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--mist); cursor: pointer;
+      background: none; border: 1px solid rgba(200,134,58,0.2);
+      padding: 0.65rem 1.6rem; transition: all 0.2s; margin-top: 0.5rem;
+    }
+    .vittoria-btn:hover { border-color: var(--amber); color: var(--amber-lt); }
+  </style>
+</head>
+<body>
+
+<!-- ─── NAV ── -->
+<nav>
+  <a class="nav-logo" href="#top">⌂ Bivacco Zeni</a>
+  <ul class="nav-links">
+    <li><a href="#info">Info</a></li>
+    <li><a href="#bivacco">Bivacco</a></li>
+    <li><a href="#mappa">Mappa</a></li>
+    <li><a href="#zaino">Zaino</a></li>
+  </ul>
+  <!-- subtle egg progress — starts nearly invisible, brightens as eggs are solved -->
+  <span class="egg-counter" id="eggCounter">✦ 0 / 3</span>
+</nav>
+
+<!-- ─── HERO ── -->
+<header class="hero" id="top">
+  <div class="stars" id="stars"></div>
+  <!-- 🥚 Easter egg #1 -->
+  <span class="egg-star" id="egg1" title=" " onclick="openMorseEgg()">✦</span>
+
+  <svg class="hero-mountain" viewBox="0 0 1440 320" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="mtnGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stop-color="#1a2c3a" stop-opacity="0.9"/>
+        <stop offset="100%" stop-color="#0d1117" stop-opacity="1"/>
+      </linearGradient>
+    </defs>
+    <path d="M0 280 L80 200 L160 230 L260 140 L360 190 L440 110 L520 160 L600 90 L680 140 L760 80 L840 130 L920 60 L1000 120 L1080 70 L1160 110 L1240 150 L1320 100 L1440 180 L1440 320 L0 320Z" fill="rgba(26,44,58,0.5)"/>
+    <path d="M0 320 L0 260 L100 300 L200 240 L320 280 L420 200 L500 250 L600 180 L700 230 L800 160 L900 210 L1000 170 L1100 220 L1200 190 L1300 240 L1440 200 L1440 320Z" fill="url(#mtnGrad)"/>
+    <path d="M600 180 L620 200 L580 200Z" fill="rgba(240,236,228,0.6)"/>
+    <path d="M800 160 L820 185 L780 185Z" fill="rgba(240,236,228,0.5)"/>
+    <path d="M1000 170 L1018 192 L982 192Z" fill="rgba(240,236,228,0.45)"/>
+    <path d="M420 200 L440 222 L400 222Z" fill="rgba(240,236,228,0.35)"/>
+  </svg>
+
+  <h1 class="hero-title">Bivacco<br><em>Donato Zeni</em></h1>
+  <div class="hero-badges">
+    <span class="badge">2 Giorni · 1 Notte</span>
+    <span class="badge">↑ 685 m dislivello</span>
+    <span class="badge">2.100 m s.l.m.</span>
+  </div>
+</header>
+
+<!-- ─── INFO ── -->
+<section class="section section--dark" id="info">
+  <p class="section-label reveal">/ panoramica</p>
+  <h2 class="section-title reveal"><em>L'Escursione</em></h2>
+  <div class="divider reveal"></div>
+
+  <div class="info-grid reveal">
+    <div class="info-card">
+      <span class="info-card-label">Partenza</span>
+      <span class="info-card-value">1415</span>
+      <span class="info-card-unit">m — Campeggio Vidor · parcheggio da riconfirmare</span>
+    </div>
+    <div class="info-card">
+      <span class="info-card-label">Arrivo</span>
+      <span class="info-card-value">2100</span>
+      <span class="info-card-unit">m — Bivacco Zeni</span>
+    </div>
+    <div class="info-card">
+      <span class="info-card-label">Dislivello ↑</span>
+      <span class="info-card-value">~685m</span>
+      <span class="info-card-unit">Ringraziate Fabio, sennò erano 1000+</span>
+    </div>
+    <div class="info-card">
+      <span class="info-card-label">Durata salita</span>
+      <span class="info-card-value">~2</span>
+      <span class="info-card-unit">ore · (speriamo)</span>
+    </div>
+    <div class="info-card">
+      <span class="info-card-label">Sentiero</span>
+      <span class="info-card-value">615</span>
+      <span class="info-card-unit">SAT · segnaletica biancorossa</span>
+    </div>
+  </div>
+
+  <div class="elev-chart reveal">
+    <svg viewBox="0 0 800 120" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="elevGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#c8863a" stop-opacity="0.4"/>
+          <stop offset="100%" stop-color="#c8863a" stop-opacity="0.02"/>
+        </linearGradient>
+      </defs>
+      <line x1="0" y1="20" x2="800" y2="20" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+      <line x1="0" y1="60" x2="800" y2="60" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+      <line x1="0" y1="100" x2="800" y2="100" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+      <path d="M0 105 C40 100 80 95 130 85 C180 72 230 60 280 50 C320 42 360 35 400 28 C430 23 460 20 490 20 C520 20 540 22 560 24 C580 28 600 30 640 20 L640 120 L0 120Z" fill="url(#elevGrad)"/>
+      <path d="M0 105 C40 100 80 95 130 85 C180 72 230 60 280 50 C320 42 360 35 400 28 C430 23 460 20 490 20 C520 20 540 22 560 24 C580 28 600 30 640 20" fill="none" stroke="#c8863a" stroke-width="1.5" stroke-linejoin="round"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ─── GALLERIA ── -->
+<section class="section" style="padding-top:2rem; padding-bottom:2rem;">
+  <div class="image-grid reveal">
+    <div>
+      <img src="/bivaccozeni.jpg" style="width:100%;height:auto;display:block;" />
+    </div>
+  </div>
+</section>
+
+<!-- ─── BIVACCO INFO ── -->
+<section class="section section--pine" id="bivacco">
+  <p class="section-label reveal">/ struttura</p>
+  <h2 class="section-title reveal">Il <em>Bivacco</em></h2>
+  <div class="divider reveal"></div>
+
+  <div class="two-col">
+    <div class="reveal">
+      <div class="info-box">
+        <p class="info-box-title">// dati tecnici</p>
+        <div class="prose">
+          <p><strong>Quota:</strong> 2.100 m s.l.m.</p>
+          <p><strong>Posti letto:</strong> 5–6 posti</p>
+          <p><strong>Struttura:</strong> Metallo, sempre aperto (incustodito)</p>
+          <p><strong>Anno costruzione:</strong> 1970 (CAAI)</p>
+          <p><strong>Gestione:</strong> S.A.T. dal 1996</p>
+          <p><strong>Comune:</strong> San Giovanni di Fassa</p>
+          <p><strong>Gruppo:</strong> Marmolada · Monzoni-Vallaccia</p>
+        </div>
+      </div>
+      <!--
+        🥚 EASTER EGG #3 — four faint golden numbers hidden here: 2, 1, 0, 0
+        Sum = 3 = the answer to the coordinate puzzle.
+        The tiny ● in the footer is the trigger.
+      -->
+      <p style="font-family:var(--mono);font-size:0.6rem;color:var(--mist);opacity:0.35;margin-top:1rem;line-height:2.2;">
+        Nota archivio S.A.T. — scheda n.<span class="egg-num">2</span>/<span class="egg-num">1</span>·<span class="egg-num">0</span><span class="egg-num">0</span> — dossier Vallaccia
+      </p>
+    </div>
+
+    <div class="prose reveal">
+      <p>
+        Il bivacco è intitolato a <strong>Donato Zeni</strong>, medico originario di Vigo di Fassa e alpinista accademico, scomparso durante un'ascensione alle <strong>Torri del Sella</strong> nel 1965.
+      </p>
+      <p>
+        La struttura in metallo è incustodita e <strong>sempre aperta</strong>, non serve prenotazione, vige la regola dei rifugi: si trovano le coperte, si lascia tutto in ordine, ci si saluta da montanari.
+      </p>
+      <div class="warning-box">
+        <strong>📦 Bivacco incustodito:</strong> Portate tutto il necessario — acqua (c'è un ruscello nella valletta sotto), cibo, sacco a pelo e coperta. Non ci sono servizi.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── MAPPA ── -->
+<section class="section section--dark" id="mappa">
+  <p class="section-label reveal">/ esplora il percorso</p>
+  <h2 class="section-title reveal"><em>Mappa</em> del Tracciato</h2>
+  <div class="divider reveal"></div>
+
+  <div class="map-container reveal">
+    <iframe class="alltrails" src="https://www.alltrails.com/widget/map/custom-route-580ced9?u=m&sh=bth9xp" width="100%" height="400" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" title="AllTrails: Trail Guides and Maps for Hiking, Camping, and Running"></iframe>
+  </div>
+</section>
+
+<!-- ─── ZAINO ── -->
+<section class="section section--stone" id="zaino">
+  <p class="section-label reveal">/ equipaggiamento</p>
+  <h2 class="section-title reveal">Cosa <em>Portare</em></h2>
+  <div class="divider reveal"></div>
+
+  <div class="two-col">
+    <div class="reveal">
+      <p class="section-label">// obbligatorio</p>
+      <div class="gear-list">
+        <div class="gear-item"><span class="gear-icon">▸</span> Sacco a pelo (temp. 0°)</div>
+        <div class="gear-item"><span class="gear-icon">▸</span> Acqua (min. 2L a testa)</div>
+        <div class="gear-item"><span class="gear-icon">▸</span> Cibo per 24h + colazione</div>
+        <div class="gear-item">
+          <span class="gear-icon">▸</span> Frontale
+          <!-- 🥚 Easter egg #2 trigger -->
+          <span class="egg-gear" id="egg2" onclick="openRiddleEgg()" title=" ">◈</span>
+        </div>
+        <div class="gear-item"><span class="gear-icon">▸</span> Scarponi da montagna</div>
+        <div class="gear-item"><span class="gear-icon">▸</span> K-way o giacca impermeabile</div>
+      </div>
+    </div>
+    <div class="reveal">
+      <p class="section-label">// consigliato</p>
+      <div class="gear-list">
+        <div class="gear-item"><span class="gear-icon">◦</span> Crema solare SPF 50+</div>
+        <div class="gear-item"><span class="gear-icon">◦</span> Occhiali da sole</div>
+        <div class="gear-item"><span class="gear-icon">◦</span> Guanti leggeri</div>
+        <div class="gear-item"><span class="gear-icon">◦</span> Thermos</div>
+        <div class="gear-item"><span class="gear-icon">◦</span> Powerbank</div>
+        <div class="gear-item"><span class="gear-icon">◦</span> Vino/Birra</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ── -->
+<footer>
+  <span class="footer-copy">Bivacco Donato Zeni — Val di Fassa — Dolomiti</span>
+  <span class="footer-coords">N 46°24′ · E 11°40′ · 2100 m</span>
+  <!-- 🥚 Easter egg #3 trigger -->
+  <span class="egg-footer" id="egg3" onclick="openCoordEgg()">●</span>
+</footer>
+
+
+<!-- ══════════════════════════════════════════════════════════════
+     MODAL #1 — MORSE PUZZLE
+     — — | — — — | — · | · —  =  MONA
+══════════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="modal1">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('modal1')">✕</button>
+    <p class="modal-title">// trasmissione criptata</p>
+    <h2 class="modal-heading">Segnale da Tradurre</h2>
+    <div class="modal-body">
+      <p>Una trasmissione è stata captata dalla vetta. Decodifica il messaggio in codice Morse.</p>
+      <p class="morse-hint" style="margin-top:1.2rem;">
+        Il messaggio da decodificare:<br>
+        <span style="color:var(--amber);letter-spacing:0.25em;display:block;margin-top:0.6rem;font-size:1rem;">
+          — — &nbsp;|&nbsp; — — — &nbsp;|&nbsp; — · &nbsp;|&nbsp; · —
+        </span>
+        <span style="display:block;margin-top:0.5rem;opacity:0.5;">(ogni gruppo separato da | è una lettera)</span>
+      </p>
+      <input type="text" id="morseInput" class="riddle-input"
+        placeholder="..."
+        autocomplete="off"
+        onkeydown="if(event.key==='Enter') checkMorse()" />
+      <button class="riddle-submit" style="margin-top:0.5rem;" onclick="checkMorse()">▶ Verifica</button>
+      <div id="morseResult" class="morse-result"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     MODAL #2 — RIDDLE PUZZLE
+     Answer: fabio
+══════════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="modal2">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('modal2')">✕</button>
+    <p class="modal-title">// documento trovato per terra in Ca-Vignal 1</p>
+    <h2 class="modal-heading">Problema dell'universitario</h2>
+    <div class="modal-body">
+      <p>Indovina chi</p>
+      <div class="coord-clues">
+        - Ho sempre mal di pancia<br>
+        - Scatarro come DeSinopoli<br>
+        - I miei capelli hanno preso fuoco almeno una volta
+      </div>
+      <input class="riddle-input" id="riddleInput" type="text"
+        placeholder="scrivi la risposta in minuscolo..."
+        onkeydown="if(event.key==='Enter') checkRiddle()" />
+      <button class="riddle-submit" onclick="checkRiddle()">▶ Risposta</button>
+      <div class="morse-result" id="riddleResult">
+        Complimenti, <strong>Angela</strong> ti offrira' un caffe'
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     MODAL #3 — COORDINATE CIPHER
+     Hidden numbers: 2, 1, 0, 0 → sum = 3
+══════════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="modal3">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('modal3')">✕</button>
+    <p class="modal-title">// sistema di decrittazione coordinate</p>
+    <h2 class="modal-heading">Il Codice della Vetta</h2>
+    <div class="modal-body">
+      <p>Trova le coordinate del <span class="coord-highlight">bivacco Donato Zeni  </span></p>
+      <div class="coord-clues">
+        Inserisci la somma dei numeri qui sotto.
+      </div>
+      <input class="riddle-input" id="coordInput" type="number"
+        placeholder="inserisci la somma..."
+        onkeydown="if(event.key==='Enter') checkCoord()" />
+      <button class="riddle-submit" onclick="checkCoord()">▶ Decritta</button>
+      <div class="morse-result" id="coordResult">
+        Wow... non ho parole. Fabio ti dovra' offrire un Gin-Tonic con il Gin buono
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     MODAL VITTORIA — fires when all 3 eggs are solved
+══════════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="modalVittoria">
+  <div class="modal" style="text-align:center;">
+    <!-- no close button — must use the button below for ceremony -->
+    <div class="vittoria-stars">✦ ✦ ✦</div>
+    <p class="vittoria-label">// trasmissione finale sbloccata</p>
+    <h2 class="vittoria-heading">Tutti gli<br><em>enigmi risolti</em></h2>
+    <div class="vittoria-divider"></div>
+
+    <div class="vittoria-msg-box">
+      <p class="vittoria-msg-box-label">// messaggio ricevuto dalla vetta</p>
+      <p class="vittoria-msg-text">"Text Kimi:<br>Ciao meraviglia"</p>
+    </div>
+
+    <button class="vittoria-btn" onclick="closeModal('modalVittoria')">
+      ▶ Missione completata
+    </button>
+  </div>
+</div>
+
+
+<!-- ─── SCRIPTS ── -->
+<script>
+  /* ── Stars ── */
+  (function() {
+    const c = document.getElementById('stars');
+    for (let i = 0; i < 80; i++) {
+      const s = document.createElement('div');
+      s.className = 'star';
+      s.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*70}%;
+        --dur:${2+Math.random()*4}s;--del:${-Math.random()*4}s;
+        opacity:${Math.random()*0.6};
+        width:${Math.random()<0.2?3:1.5}px;height:${Math.random()<0.2?3:1.5}px;`;
+      c.appendChild(s);
+    }
+  })();
+
+  /* ── Scroll reveal ── */
+  const revealObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(r => revealObserver.observe(r));
+
+  /* ── Modal helpers ── */
+  function openModal(id)  { document.getElementById(id).classList.add('open'); }
+  function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+  document.querySelectorAll('.modal-overlay').forEach(m => {
+    m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open'); });
+  });
+
+  /* ══════════════════════════════════════════════════════════════
+     EGG TRACKER
+     solvedEggs tracks which puzzles have been correctly solved.
+     markEggSolved() updates the counter and fires the celebration
+     once all three are in.
+  ══════════════════════════════════════════════════════════════ */
+  const solvedEggs = new Set();
+
+  function markEggSolved(eggId) {
+    if (solvedEggs.has(eggId)) return; // don't double-count
+    solvedEggs.add(eggId);
+
+    // Update the subtle nav counter
+    const counter = document.getElementById('eggCounter');
+    counter.textContent = `✦ ${solvedEggs.size} / 3`;
+    counter.style.opacity = 0.2 + (solvedEggs.size * 0.27); // brightens with each solve
+
+    if (solvedEggs.size === 3) {
+      counter.classList.add('all-done');
+      // Short pause so player reads their success, then show celebration
+      setTimeout(() => {
+        ['modal1','modal2','modal3'].forEach(id => closeModal(id));
+        setTimeout(() => openModal('modalVittoria'), 350);
+      }, 900);
+    }
+  }
+
+  /* ══════════════════════════════════════════════════════════════
+     EGG #1 — Morse  (answer: MONA)
+  ══════════════════════════════════════════════════════════════ */
+  function openMorseEgg() {
+    document.getElementById('morseInput').value = '';
+    const r = document.getElementById('morseResult');
+    r.className = 'morse-result'; r.innerHTML = '';
+    openModal('modal1');
+    setTimeout(() => document.getElementById('morseInput').focus(), 300);
+  }
+
+  function checkMorse() {
+    const input  = document.getElementById('morseInput');
+    const result = document.getElementById('morseResult');
+    const answer = input.value.toUpperCase().trim();
+    result.className = 'morse-result';
+
+    if (answer === 'MONA') {
+      result.innerHTML = `Messaggio decodificato correttamente!<br><br>
+        <span style="color:var(--snow);">Complimenti, Leo ti offrira' un gelato</span>`;
+      result.classList.add('show');
+      markEggSolved('morse');
+    } else if (answer !== '') {
+      result.innerHTML = `✗ &ldquo;${answer}&rdquo; — non è la parola giusta. Riprova.`;
+      result.classList.add('error');
+      setTimeout(() => { result.className='morse-result'; result.innerHTML=''; }, 2000);
+    }
+  }
+
+  /* ══════════════════════════════════════════════════════════════
+     EGG #2 — Riddle  (answer: fabio)
+  ══════════════════════════════════════════════════════════════ */
+  function openRiddleEgg() {
+    document.getElementById('riddleInput').value = '';
+    document.getElementById('riddleResult').className = 'morse-result';
+    openModal('modal2');
+    setTimeout(() => document.getElementById('riddleInput').focus(), 300);
+  }
+
+  function checkRiddle() {
+    const val    = document.getElementById('riddleInput').value.toLowerCase().trim();
+    const result = document.getElementById('riddleResult');
+    result.className = 'morse-result';
+
+    if (val.includes('fabio')) {
+      result.classList.add('show');
+      markEggSolved('riddle');
+    } else if (val !== '') {
+      result.innerHTML = `✗ Risposta sbagliata. Riprova...`;
+      result.classList.add('error');
+      setTimeout(() => { result.className='morse-result'; result.innerHTML=''; }, 2500);
+    }
+  }
+
+  /* ══════════════════════════════════════════════════════════════
+     EGG #3 — Coordinate cipher  (answer: 3)
+  ══════════════════════════════════════════════════════════════ */
+  function openCoordEgg() {
+    document.getElementById('coordInput').value = '';
+    document.getElementById('coordResult').className = 'morse-result';
+    openModal('modal3');
+    setTimeout(() => document.getElementById('coordInput').focus(), 300);
+  }
+
+  function checkCoord() {
+    const val    = parseInt(document.getElementById('coordInput').value, 10);
+    const result = document.getElementById('coordResult');
+    result.className = 'morse-result';
+
+    if (val === 4) {
+      result.classList.add('show');
+      markEggSolved('coord');
+    } else if (!isNaN(val)) {
+      result.innerHTML = `✗ Somma errata: ${val}. I numeri dorati aspettano di essere trovati...`;
+      result.classList.add('error');
+      setTimeout(() => { result.className='morse-result'; result.innerHTML=''; }, 2500);
+    }
+  }
+</script>
+</body>
+</html>
